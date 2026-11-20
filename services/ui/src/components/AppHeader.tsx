@@ -6,6 +6,13 @@ import { ApiStatus } from "@/components/ApiStatus";
 import { useViewer } from "@/hooks/useViewer";
 import { cn } from "@/lib/utils";
 
+function navClass({ isActive }: { isActive: boolean }): string {
+  return cn(
+    "rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground",
+    isActive && "bg-muted text-foreground",
+  );
+}
+
 // The product name and the primary navigation; on the right, the API's
 // status and the signed-in user.
 export function AppHeader(): ReactElement {
@@ -18,17 +25,11 @@ export function AppHeader(): ReactElement {
           {t("app.name")}
         </Link>
         <nav aria-label={t("nav.label")} className="flex items-center gap-1">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              cn(
-                "rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground",
-                isActive && "bg-muted text-foreground",
-              )
-            }
-          >
+          <NavLink to="/" end className={navClass}>
             {t("nav.dashboard")}
+          </NavLink>
+          <NavLink to="/companies" className={navClass}>
+            {t("nav.companies")}
           </NavLink>
         </nav>
         <div className="ml-auto flex items-center gap-4">

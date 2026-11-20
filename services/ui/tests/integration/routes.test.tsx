@@ -1,5 +1,5 @@
 import { expect, spyOn, test } from "bun:test";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import {
   createMemoryRouter,
   RouterProvider,
@@ -28,6 +28,21 @@ test("[app-shell-af1ebe] [dashboard-9e4f6d] the home screen is the dashboard, in
     within(main).getByRole("heading", { name: "Dashboard" }),
   ).toBeDefined();
   expect(await within(main).findByText("12")).toBeDefined();
+});
+
+test("[app-shell-0710e1] [companies-dd9575] the Companies link opens the companies screen", async () => {
+  visit("/");
+  const nav = within(await screen.findByRole("navigation", { name: "Main" }));
+  fireEvent.click(nav.getByRole("link", { name: "Companies" }));
+  const main = screen.getByRole("main");
+  expect(
+    await within(main).findByRole("heading", { name: "Companies" }),
+  ).toBeDefined();
+  expect(await within(main).findByText("Acme Co")).toBeDefined();
+  const companies = nav.getByRole("link", { name: "Companies" });
+  expect(companies.getAttribute("aria-current")).toBe("page");
+  const dashboard = nav.getByRole("link", { name: "Dashboard" });
+  expect(dashboard.getAttribute("aria-current")).toBeNull();
 });
 
 test("[app-shell-c88136] an unknown path shows the not-found screen", async () => {

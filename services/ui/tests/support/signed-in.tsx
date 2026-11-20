@@ -9,6 +9,7 @@ import {
 import { HealthQuery } from "@/services/graphql/health";
 import { ApiOriginContext } from "@/services/graphql/origin";
 import { ViewerQuery } from "@/services/graphql/viewer";
+import { acme, bare, companiesAnswer } from "./companies";
 import { dashboardAnswer, stats } from "./dashboard";
 
 export const demo = {
@@ -33,6 +34,7 @@ function mocks(viewer: typeof demo | null): MockLink.MockedResponse[] {
       maxUsageCount: Number.POSITIVE_INFINITY,
     },
     dashboardAnswer(stats, 0),
+    companiesAnswer([acme, bare]),
   ];
 }
 

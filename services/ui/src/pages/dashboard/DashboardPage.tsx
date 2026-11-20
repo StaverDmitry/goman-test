@@ -1,7 +1,7 @@
 import type { ReactElement } from "react";
 import { useTranslation } from "react-i18next";
-import { Notice } from "@/components/Notice";
-import { Button } from "@/components/ui/button";
+import { PageHeader } from "@/components/PageHeader";
+import { ReloadNotice } from "@/components/ReloadNotice";
 import { useDashboard } from "@/hooks/useDashboard";
 import { SignUpsChart } from "./SignUpsChart";
 import { StatTile } from "./StatTile";
@@ -13,28 +13,16 @@ export function DashboardPage(): ReactElement {
   const state = useDashboard();
   if (state.status === "failed") {
     return (
-      <Notice title={t("dashboard.failed")} body={t("dashboard.retry")}>
-        <Button
-          onClick={() => {
-            window.location.reload();
-          }}
-        >
-          {t("error.reload")}
-        </Button>
-      </Notice>
+      <ReloadNotice title={t("dashboard.failed")} body={t("dashboard.retry")} />
     );
   }
   const { dashboard } = state; // undefined while loading
   return (
     <section className="space-y-6">
-      <div className="space-y-1">
-        <h1 className="text-2xl font-semibold tracking-tight">
-          {t("dashboard.title")}
-        </h1>
-        <p className="text-muted-foreground">
-          {t("dashboard.lead", { name: t("app.name") })}
-        </p>
-      </div>
+      <PageHeader
+        title={t("dashboard.title")}
+        lead={t("dashboard.lead", { name: t("app.name") })}
+      />
       <div className="grid gap-4 sm:grid-cols-2">
         <StatTile
           label={t("dashboard.totalUsers")}

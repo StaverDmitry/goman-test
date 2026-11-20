@@ -1,6 +1,7 @@
 import { MockedProvider } from "@apollo/client/testing/react";
 import type { MockLink } from "@apollo/client/testing";
-import { render } from "@testing-library/react";
+import { spyOn } from "bun:test";
+import { render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
 import { ApiOriginContext } from "@/services/graphql/origin";
 
@@ -23,4 +24,22 @@ export function showHook(
       </MockedProvider>
     </ApiOriginContext>,
   );
+}
+
+/**
+ * Shows a data hook with no API origin and reports what it rendered and how
+ * many requests left the page.
+ */
+export function showUnconfigured(useHook: () => unknown): {
+  state: string | null;
+  requests: number;
+} {
+  const fetchSpy = spyOn(globalThis, "fetch");
+  showHook(useHook, [], undefined);
+  const result = {
+    state: screen.getByRole("status").textContent,
+    requests: fetchSpy.mock.calls.length,
+  };
+  fetchSpy.mockRestore();
+  return result;
 }

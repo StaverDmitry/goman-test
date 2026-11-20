@@ -1,18 +1,12 @@
 import { useState, type ReactElement, type SubmitEvent } from "react";
 import { useTranslation } from "react-i18next";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { formText } from "@/lib/form-text";
 import type { AuthResult } from "@/services/auth";
 
 type Problem = Exclude<AuthResult, "ok"> | undefined;
-
-const text = z.string(); // both fields are text inputs
-
-function field(form: FormData, name: string): string {
-  return text.parse(form.get(name));
-}
 
 // Email and password. While a sign-in is pending the button says so and
 // sends nothing more; a refused or failed one says why and keeps the fields.
@@ -32,8 +26,8 @@ export function LoginForm({
     setPending(true);
     setProblem(undefined);
     const result = await onSignIn(
-      field(form, "email"),
-      field(form, "password"),
+      formText(form, "email"),
+      formText(form, "password"),
     );
     if (result === "ok") return;
     setProblem(result);

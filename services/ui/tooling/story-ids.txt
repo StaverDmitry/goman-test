@@ -15,6 +15,12 @@ app-notice--dark
 app-notice--default
 app-notice--docs
 app-notice--two-actions
+app-pageheader--dark
+app-pageheader--default
+app-pageheader--docs
+app-reloadnotice--dark
+app-reloadnotice--default
+app-reloadnotice--docs
 introduction--docs
 ui-button--dark
 ui-button--default

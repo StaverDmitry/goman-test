@@ -4,7 +4,8 @@
   },
   "nav": {
     "label": "Main",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "companies": "Companies"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -45,5 +46,20 @@
   },
   "account": {
     "signOut": "Sign out"
+  },
+  "companies": {
+    "title": "Companies",
+    "lead": "The organisations you work with.",
+    "empty": "No companies yet.",
+    "loading": "Loading…",
+    "failed": "Couldn't load the companies.",
+    "retry": "Reload to try again.",
+    "add": "Add company",
+    "name": "Name",
+    "websiteLabel": "Website (optional)",
+    "adding": "Adding…",
+    "duplicate": "A company with this name already exists.",
+    "createFailed": "Couldn't add the company. Try again.",
+    "list": "Company list"
   }
 }
