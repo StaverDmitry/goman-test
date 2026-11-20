@@ -1,6 +1,21 @@
 # Generated file: do not edit it by hand.
 # Change its source and run bin/contracts generate.
 
+"""A person the CRM keeps. Signed-in users only."""
+type Contact {
+  """When the contact was created, an ISO 8601 UTC time."""
+  createdAt: String!
+
+  """The contact's email address."""
+  email: String!
+
+  """The contact's id."""
+  id: ID!
+
+  """The contact's name."""
+  name: String!
+}
+
 """Stats for the dashboard. Signed-in users only."""
 type Dashboard {
   """Sign-ups on each of the last 7 days (UTC), oldest first, ending today."""
@@ -17,6 +32,11 @@ type Health {
 }
 
 type Query {
+  """
+  Every contact, the most recently created first. Fails with UNAUTHENTICATED when signed out.
+  """
+  contacts: [Contact!]!
+
   """The dashboard's stats. Fails with UNAUTHENTICATED when signed out."""
   dashboard: Dashboard!
 
