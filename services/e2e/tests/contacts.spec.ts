@@ -7,6 +7,7 @@ import { signIn } from "./fixtures/auth";
    request itself. */
 
 const CONTACTS = "{ contacts { id name email createdAt } }";
+const FIELDS = ["createdAt", "email", "id", "name"];
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
@@ -22,7 +23,12 @@ async function createdTimes(cookie: string): Promise<number[]> {
   }
   const entries: unknown[] = contacts;
   return entries.map((entry) => {
-    if (isRecord(entry) && typeof entry.createdAt === "string") {
+    if (
+      isRecord(entry) &&
+      typeof entry.createdAt === "string" &&
+      Object.keys(entry).toSorted().join() === FIELDS.join() &&
+      Object.values(entry).every((value) => typeof value === "string")
+    ) {
       return Date.parse(entry.createdAt);
     }
     throw new Error(`not a contact: ${JSON.stringify(entry)}`);
