@@ -2,6 +2,8 @@ import type { Server } from "node:http";
 import { createApp } from "../../src/app";
 import { createAuth } from "../../src/auth";
 import type { Probe } from "../../src/health";
+import { databaseContacts } from "../../src/db/contacts";
+import { contacts } from "../../src/db/schema";
 import { databaseUserStats } from "../../src/db/user-stats";
 import { seedDemoUsers } from "../../src/seed";
 import { migratedDatabase, type TestDatabase } from "./database";
@@ -10,13 +12,19 @@ import { defined } from "./defined";
 // The UI origin every test app allows.
 export const appUrl = "http://127.0.0.1:11100";
 
+type SeedContact = { name: string; email: string; createdAt: string };
+
 export type AppServers = {
   // Starts the app on an ephemeral port, over a fresh migrated database, and
   // returns its base URL.
   start: (probe?: Probe) => Promise<string>;
   // The same, with the demo user seeded; sign-in is not rate limited unless
   // asked, as on a local stack.
-  startSeeded: (options?: { rateLimited?: boolean }) => Promise<string>;
+  // Contacts to insert first, as created at the given ISO times.
+  startSeeded: (options?: {
+    rateLimited?: boolean;
+    contacts?: SeedContact[];
+  }) => Promise<string>;
   // The same, over a database that is already closed, so every session
   // lookup fails.
   startOnClosedDatabase: () => Promise<string>;
@@ -34,6 +42,7 @@ async function listen(
     probe,
     appUrl,
     userStats: databaseUserStats(db),
+    contacts: databaseContacts(db),
     auth: createAuth({
       db,
       appUrl,
@@ -58,9 +67,16 @@ export function appServers(): AppServers {
   return {
     start: async (probe = () => Promise.resolve(true)) =>
       listen(open, await migratedDatabase(), probe),
-    startSeeded: async ({ rateLimited = false } = {}) => {
+    startSeeded: async ({ rateLimited = false, contacts: rows = [] } = {}) => {
       const db = await migratedDatabase();
       await seedDemoUsers(db, { FACTORY_LOCAL_STACK: "1" });
+      if (rows.length > 0) {
+        await db
+          .insert(contacts)
+          .values(
+            rows.map((row) => ({ ...row, createdAt: new Date(row.createdAt) })),
+          );
+      }
       return listen(open, db, () => Promise.resolve(true), rateLimited);
     },
     startOnClosedDatabase: async () => {

@@ -1,6 +1,7 @@
 // The one Pothos schema builder every resource module adds its types to.
 import SchemaBuilder from "@pothos/core";
 
+import type { Contacts } from "../contacts";
 import type { UserStats } from "../dashboard";
 import type { Probe } from "../health";
 import type { Viewer } from "../viewer";
@@ -10,6 +11,7 @@ export type Context = {
   probe: Probe;
   viewer: Viewer | null;
   userStats: UserStats;
+  contacts: Contacts;
 };
 
 // Fields are non-null unless a field says otherwise: a client never has to

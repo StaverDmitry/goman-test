@@ -1,8 +1,8 @@
 {
   "type": "base",
+  "id": "b1dd9d9a-ab27-4a22-872e-352cfe13e17f",
   "version": "9",
   "dialect": "postgres",
-  "id": "78f26ec6-74db-428b-8288-328b26ddaf68",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -21,6 +21,25 @@
         "n|rel|public.accounts",
         "n|type|public.accounts",
         "n|rel|public.accounts_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "contacts"
+      ],
+      "writes": [
+        "s|tbl|public.contacts",
+        "n|tbl|public.contacts",
+        "e|tbl|public.contacts",
+        "n|rel|public.contacts",
+        "n|type|public.contacts",
+        "n|rel|public.contacts_pkey"
       ],
       "reads": [
         "n|sch|public"
@@ -201,6 +220,12 @@
     },
     {
       "schema": "public",
+      "name": "contacts",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
       "name": "sessions",
       "isRlsEnabled": false,
       "entityType": "tables"
@@ -376,6 +401,71 @@
     {
       "schema": "public",
       "table": "accounts",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "contacts",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "contacts",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "contacts",
+      "name": "email",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "contacts",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "contacts",
       "name": "updated_at",
       "type": "timestamp with time zone",
       "typeSchema": null,
@@ -760,6 +850,16 @@
       "schema": "public",
       "table": "accounts",
       "name": "accounts_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "contacts",
+      "name": "contacts_pkey",
       "columns": [
         "id"
       ],

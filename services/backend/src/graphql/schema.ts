@@ -2,6 +2,7 @@
 // builder when imported, so each one is imported here.
 import type { GraphQLSchema } from "graphql";
 import { builder } from "./builder";
+import "./resources/contacts";
 import "./resources/dashboard";
 import "./resources/health";
 import "./resources/viewer";

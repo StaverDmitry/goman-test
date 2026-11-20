@@ -1,7 +1,7 @@
-import { expect, spyOn, test } from "bun:test";
+import { expect, test } from "bun:test";
 import { MockedProvider } from "@apollo/client/testing/react";
 import type { MockLink } from "@apollo/client/testing";
-import { fireEvent, render, screen, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { DashboardPage } from "@/pages/dashboard/DashboardPage";
 import { ApiOriginContext } from "@/services/graphql/origin";
 import {
@@ -10,6 +10,7 @@ import {
   stats,
   week,
 } from "../../../support/dashboard";
+import { expectReloadNotice } from "../../../support/reload";
 import { withLayout } from "../../../support/layout";
 
 withLayout();
@@ -65,19 +66,8 @@ test.each([
 ] as const)(
   "[dashboard-6a87f4] %s shows the notice, and Reload reloads",
   async (_case, mock) => {
-    const reload = spyOn(window.location, "reload").mockImplementation(
-      () => undefined,
-    );
     show(mock);
-    expect(
-      await screen.findByRole("heading", {
-        name: "Couldn't load the dashboard.",
-      }),
-    ).toBeDefined();
-    expect(screen.getByText("Reload to try again.")).toBeDefined();
+    await expectReloadNotice("Couldn't load the dashboard.");
     expect(screen.queryByText("Total users")).toBeNull();
-    fireEvent.click(screen.getByRole("button", { name: "Reload" }));
-    expect(reload).toHaveBeenCalledTimes(1);
-    reload.mockRestore();
   },
 );

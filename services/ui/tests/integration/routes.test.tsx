@@ -1,5 +1,5 @@
 import { expect, spyOn, test } from "bun:test";
-import { render, screen, within } from "@testing-library/react";
+import { fireEvent, render, screen, within } from "@testing-library/react";
 import {
   createMemoryRouter,
   RouterProvider,
@@ -28,6 +28,29 @@ test("[app-shell-af1ebe] [dashboard-9e4f6d] the home screen is the dashboard, in
     within(main).getByRole("heading", { name: "Dashboard" }),
   ).toBeDefined();
   expect(await within(main).findByText("12")).toBeDefined();
+});
+
+test("[contacts-1ae31b] the Contacts link opens the contacts page", async () => {
+  visit("/");
+  const nav = within(await screen.findByRole("banner")).getByRole(
+    "navigation",
+    { name: "Main" },
+  );
+  const link = within(nav).getByRole("link", { name: "Contacts" });
+  expect(link.getAttribute("aria-current")).toBeNull();
+  fireEvent.click(link);
+  const main = screen.getByRole("main");
+  expect(
+    await within(main).findByRole("heading", { name: "Contacts" }),
+  ).toBeDefined();
+  expect(link.getAttribute("href")).toBe("/contacts");
+  expect(link.getAttribute("aria-current")).toBe("page");
+  expect(
+    within(nav)
+      .getByRole("link", { name: "Dashboard" })
+      .getAttribute("aria-current"),
+  ).toBeNull();
+  expect(await within(main).findByText("Grace Hopper")).toBeDefined();
 });
 
 test("[app-shell-c88136] an unknown path shows the not-found screen", async () => {

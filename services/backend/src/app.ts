@@ -5,6 +5,7 @@ import { expressMiddleware } from "@as-integrations/express5";
 import { toNodeHandler } from "better-auth/node";
 import express from "express";
 import { AUTH_PATH, clientAddress, sessionViewer, type Auth } from "./auth";
+import type { Contacts } from "./contacts";
 import type { UserStats } from "./dashboard";
 import type { Context } from "./graphql/builder";
 import { keepLimitCode, queryLimits } from "./graphql/limits";
@@ -20,6 +21,7 @@ export async function createApp(deps: {
   appUrl: string;
   auth: Auth;
   userStats: UserStats;
+  contacts: Contacts;
 }): Promise<express.Express> {
   const apollo = new ApolloServer<Context>({
     schema,
@@ -44,6 +46,7 @@ export async function createApp(deps: {
       context: async ({ req }) => ({
         probe: deps.probe,
         userStats: deps.userStats,
+        contacts: deps.contacts,
         viewer: await viewerOf(req.headers),
       }),
     }),
