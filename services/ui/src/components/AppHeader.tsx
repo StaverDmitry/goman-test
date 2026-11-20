@@ -6,6 +6,12 @@ import { ApiStatus } from "@/components/ApiStatus";
 import { useViewer } from "@/hooks/useViewer";
 import { cn } from "@/lib/utils";
 
+// The primary navigation: the home screen matches only its own path.
+const LINKS = [
+  { to: "/", end: true, label: "nav.dashboard" },
+  { to: "/contacts", end: false, label: "nav.contacts" },
+] as const;
+
 // The product name and the primary navigation; on the right, the API's
 // status and the signed-in user.
 export function AppHeader(): ReactElement {
@@ -18,18 +24,21 @@ export function AppHeader(): ReactElement {
           {t("app.name")}
         </Link>
         <nav aria-label={t("nav.label")} className="flex items-center gap-1">
-          <NavLink
-            to="/"
-            end
-            className={({ isActive }) =>
-              cn(
-                "rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground",
-                isActive && "bg-muted text-foreground",
-              )
-            }
-          >
-            {t("nav.dashboard")}
-          </NavLink>
+          {LINKS.map(({ to, end, label }) => (
+            <NavLink
+              key={to}
+              to={to}
+              end={end}
+              className={({ isActive }) =>
+                cn(
+                  "rounded-md px-2.5 py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground",
+                  isActive && "bg-muted text-foreground",
+                )
+              }
+            >
+              {t(label)}
+            </NavLink>
+          ))}
         </nav>
         <div className="ml-auto flex items-center gap-4">
           <ApiStatus />

@@ -3,6 +3,7 @@ import { ErrorPage } from "@/app/ErrorPage";
 import { LayoutErrorPage } from "@/app/LayoutErrorPage";
 import { RequireSession, SignedOutOnly } from "@/app/session-routes";
 import { RootLayout } from "@/layouts/RootLayout";
+import { ContactsPage } from "@/pages/contacts/ContactsPage";
 import { DashboardPage } from "@/pages/dashboard/DashboardPage";
 import { LoginPage } from "@/pages/login/LoginPage";
 import { NotFoundPage } from "@/pages/not-found/NotFoundPage";
@@ -29,6 +30,7 @@ export function createRoutes(): RouteObject[] {
               errorElement: <ErrorPage />,
               children: [
                 { index: true, element: <DashboardPage /> },
+                { path: "contacts", element: <ContactsPage /> },
                 { path: "*", element: <NotFoundPage /> },
               ],
             },

@@ -4,7 +4,8 @@
   },
   "nav": {
     "label": "Main",
-    "dashboard": "Dashboard"
+    "dashboard": "Dashboard",
+    "contacts": "Contacts"
   },
   "dashboard": {
     "title": "Dashboard",
@@ -15,6 +16,13 @@
     "signUps": "Sign-ups",
     "loading": "Loading…",
     "failed": "Couldn't load the dashboard.",
+    "retry": "Reload to try again."
+  },
+  "contacts": {
+    "title": "Contacts",
+    "empty": "No contacts yet.",
+    "loading": "Loading…",
+    "failed": "Couldn't load contacts.",
     "retry": "Reload to try again."
   },
   "notFound": {

@@ -1,4 +1,4 @@
-import { expect, spyOn, test } from "bun:test";
+import { expect, test } from "bun:test";
 import type { MockLink } from "@apollo/client/testing";
 import { screen } from "@testing-library/react";
 import { useDashboard } from "@/hooks/useDashboard";
@@ -9,6 +9,7 @@ import {
   week,
 } from "../../support/dashboard";
 import { showHook } from "../../support/hook-probe";
+import { expectNoRequest } from "../../support/reload";
 
 function show(
   mocks: MockLink.MockedResponse[],
@@ -49,9 +50,8 @@ test.each([
 });
 
 test("without an API origin the dashboard has failed and nothing is sent", () => {
-  const fetchSpy = spyOn(globalThis, "fetch");
-  show([], undefined);
+  expectNoRequest(() => {
+    show([], undefined);
+  });
   expect(screen.getByRole("status").textContent).toBe('{"status":"failed"}');
-  expect(fetchSpy).not.toHaveBeenCalled();
-  fetchSpy.mockRestore();
 });
