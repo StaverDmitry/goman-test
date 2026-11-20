@@ -4,6 +4,7 @@ import { createApp } from "./app";
 import { createAuth, type AuthOptions } from "./auth";
 import { ConfigError, parseConfig, type Config } from "./config";
 import { createDatabase, createPool, type AnyDatabase } from "./db/connection";
+import { databaseCompanies } from "./db/companies";
 import { databaseProbe } from "./db/probe";
 import { databaseUserStats } from "./db/user-stats";
 
@@ -30,6 +31,7 @@ export async function start(
     appUrl: config.appUrl,
     auth: createAuth(authOptions(config, db)),
     userStats: databaseUserStats(db),
+    companies: databaseCompanies(db),
   });
   return new Promise((resolve) => {
     const server = app.listen(config.port, () => {

@@ -1,6 +1,12 @@
 import { expect, test } from "bun:test";
 import { getTableConfig, type PgTable } from "drizzle-orm/pg-core";
-import { accounts, sessions, users, verifications } from "../../src/db/schema";
+import {
+  accounts,
+  companies,
+  sessions,
+  users,
+  verifications,
+} from "../../src/db/schema";
 import { at } from "../support/defined";
 
 function config(table: PgTable): ReturnType<typeof getTableConfig> {
@@ -39,4 +45,10 @@ test("a user's columns are the ones the migrations create", () => {
     "created_at",
     "updated_at",
   ]);
+});
+
+test("a company name is unique ignoring case", () => {
+  const [index] = config(companies).indexes;
+  expect(index?.config.name).toBe("companies_name_lower_idx");
+  expect(index?.config.unique).toBe(true);
 });

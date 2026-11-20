@@ -1,6 +1,21 @@
 # Generated file: do not edit it by hand.
 # Change its source and run bin/contracts generate.
 
+"""An organisation the CRM tracks."""
+type Company {
+  """When the company was added, ISO 8601."""
+  createdAt: String!
+
+  """The company's id."""
+  id: String!
+
+  """The company's name, unique ignoring case."""
+  name: String!
+
+  """The company's http or https website, if it has one."""
+  website: String
+}
+
 """Stats for the dashboard. Signed-in users only."""
 type Dashboard {
   """Sign-ups on each of the last 7 days (UTC), oldest first, ending today."""
@@ -16,7 +31,19 @@ type Health {
   ok: Boolean!
 }
 
+type Mutation {
+  """
+  Adds a company. Fails with UNAUTHENTICATED when signed out, BAD_USER_INPUT for an invalid name or website and DUPLICATE_COMPANY when the name is taken.
+  """
+  createCompany(name: String!, website: String): Company!
+}
+
 type Query {
+  """
+  Every company, ordered by name. Fails with UNAUTHENTICATED when signed out.
+  """
+  companies: [Company!]!
+
   """The dashboard's stats. Fails with UNAUTHENTICATED when signed out."""
   dashboard: Dashboard!
 

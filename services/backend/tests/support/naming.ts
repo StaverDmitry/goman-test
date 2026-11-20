@@ -11,11 +11,13 @@ import {
 
 const NAMING_EXCEPTIONS: Record<string, string> = {};
 
-// `Contact!` names `contact`, `[Contact!]!` names `contacts`.
+// `Contact!` names `contact`, `[Contact!]!` names `contacts`, and a name ending
+// in a consonant and `y` takes `ies`: `[Company!]!` names `companies`.
 function resourceName(type: GraphQLOutputType): string {
   const named = getNamedType(type).name;
   const name = named.charAt(0).toLowerCase() + named.slice(1);
-  return isListType(getNullableType(type)) ? `${name}s` : name;
+  if (!isListType(getNullableType(type))) return name;
+  return /[^aeiou]y$/.test(name) ? `${name.slice(0, -1)}ies` : `${name}s`;
 }
 
 /** Every root field that breaks the rule, with what it should be. */

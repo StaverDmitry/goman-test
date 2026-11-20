@@ -1,13 +1,18 @@
 import { expect, test } from "bun:test";
 import { GraphQLError } from "graphql";
 import { viewerRequired } from "../../src/graphql/viewer-required";
+import type { Companies } from "../../src/companies";
 import type { UserStats } from "../../src/dashboard";
 
 const userStats: UserStats = {
   total: () => Promise.resolve(0),
   createdPerDay: () => Promise.resolve([]),
 };
-const base = { probe: () => Promise.resolve(true), userStats };
+const companies: Companies = {
+  list: () => Promise.resolve([]),
+  create: () => Promise.resolve(null),
+};
+const base = { probe: () => Promise.resolve(true), userStats, companies };
 const demo = { id: "u1", name: "Demo User", email: "demo@example.com" };
 
 test("a signed-in context gives its viewer", () => {

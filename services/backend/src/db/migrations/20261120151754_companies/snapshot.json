@@ -1,8 +1,8 @@
 {
   "type": "base",
+  "id": "5f6e33ca-90be-4589-9aa2-0fb4f21eec9a",
   "version": "9",
   "dialect": "postgres",
-  "id": "78f26ec6-74db-428b-8288-328b26ddaf68",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -21,6 +21,25 @@
         "n|rel|public.accounts",
         "n|type|public.accounts",
         "n|rel|public.accounts_pkey"
+      ],
+      "reads": [
+        "n|sch|public"
+      ]
+    },
+    {
+      "statementType": "create_table",
+      "statementTarget": [
+        "table",
+        "public",
+        "companies"
+      ],
+      "writes": [
+        "s|tbl|public.companies",
+        "n|tbl|public.companies",
+        "e|tbl|public.companies",
+        "n|rel|public.companies",
+        "n|type|public.companies",
+        "n|rel|public.companies_pkey"
       ],
       "reads": [
         "n|sch|public"
@@ -103,6 +122,25 @@
         "n|tbl|public.accounts",
         "n|sch|public",
         "n|col|public.accounts.user_id"
+      ]
+    },
+    {
+      "statementType": "create_index",
+      "statementTarget": [
+        "index",
+        "public",
+        "companies",
+        "companies_name_lower_idx"
+      ],
+      "writes": [
+        "s|idx|public.companies_name_lower_idx",
+        "n|idx|public.companies_name_lower_idx",
+        "e|idx|public.companies_name_lower_idx",
+        "n|rel|public.companies_name_lower_idx"
+      ],
+      "reads": [
+        "n|tbl|public.companies",
+        "n|sch|public"
       ]
     },
     {
@@ -196,6 +234,12 @@
     {
       "schema": "public",
       "name": "accounts",
+      "isRlsEnabled": false,
+      "entityType": "tables"
+    },
+    {
+      "schema": "public",
+      "name": "companies",
       "isRlsEnabled": false,
       "entityType": "tables"
     },
@@ -376,6 +420,71 @@
     {
       "schema": "public",
       "table": "accounts",
+      "name": "updated_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "companies",
+      "name": "id",
+      "type": "uuid",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "gen_random_uuid()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "companies",
+      "name": "name",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "companies",
+      "name": "website",
+      "type": "text",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "companies",
+      "name": "created_at",
+      "type": "timestamp with time zone",
+      "typeSchema": null,
+      "notNull": true,
+      "dimensions": 0,
+      "default": "now()",
+      "generated": null,
+      "identity": null,
+      "entityType": "columns"
+    },
+    {
+      "schema": "public",
+      "table": "companies",
       "name": "updated_at",
       "type": "timestamp with time zone",
       "typeSchema": null,
@@ -682,6 +791,27 @@
     },
     {
       "schema": "public",
+      "table": "companies",
+      "name": "companies_name_lower_idx",
+      "nameExplicit": true,
+      "columns": [
+        {
+          "value": "lower(\"name\")",
+          "isExpression": true,
+          "asc": true,
+          "nullsFirst": false,
+          "opclass": null
+        }
+      ],
+      "isUnique": true,
+      "where": null,
+      "with": "",
+      "method": "btree",
+      "concurrently": false,
+      "entityType": "indexes"
+    },
+    {
+      "schema": "public",
       "table": "sessions",
       "name": "sessions_user_id_index",
       "nameExplicit": true,
@@ -760,6 +890,16 @@
       "schema": "public",
       "table": "accounts",
       "name": "accounts_pkey",
+      "columns": [
+        "id"
+      ],
+      "nameExplicit": false,
+      "entityType": "pks"
+    },
+    {
+      "schema": "public",
+      "table": "companies",
+      "name": "companies_pkey",
       "columns": [
         "id"
       ],

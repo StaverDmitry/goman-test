@@ -2,6 +2,7 @@ import type { Server } from "node:http";
 import { createApp } from "../../src/app";
 import { createAuth } from "../../src/auth";
 import type { Probe } from "../../src/health";
+import { databaseCompanies } from "../../src/db/companies";
 import { databaseUserStats } from "../../src/db/user-stats";
 import { seedDemoUsers } from "../../src/seed";
 import { migratedDatabase, type TestDatabase } from "./database";
@@ -34,6 +35,7 @@ async function listen(
     probe,
     appUrl,
     userStats: databaseUserStats(db),
+    companies: databaseCompanies(db),
     auth: createAuth({
       db,
       appUrl,

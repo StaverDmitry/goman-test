@@ -40,3 +40,28 @@ test("[contracts-86cd7d] a verb-named query fails, naming the field", () => {
     "mutation archiveContact: start it with create, update or delete",
   ]);
 });
+
+test("[contracts-a949e4] a list of a consonant and y resource is named with ies", () => {
+  const Company = new GraphQLObjectType({
+    name: "Company",
+    fields: { name: { type: GraphQLString } },
+  });
+  const Day = new GraphQLObjectType({
+    name: "Day",
+    fields: { name: { type: GraphQLString } },
+  });
+  const named = (company: string, day: string): GraphQLSchema =>
+    new GraphQLSchema({
+      query: new GraphQLObjectType({
+        name: "Query",
+        fields: {
+          [company]: { type: new GraphQLNonNull(new GraphQLList(Company)) },
+          [day]: { type: new GraphQLNonNull(new GraphQLList(Day)) },
+        },
+      }),
+    });
+  expect(namingProblems(named("companies", "days"))).toEqual([]);
+  expect(namingProblems(named("companys", "days"))).toEqual([
+    "query companys: name it companies",
+  ]);
+});
